@@ -1,8 +1,11 @@
 <script>
+  import { createEventDispatcher } from 'svelte'
+
   export let title = 'title'
+  const dispatch = createEventDispatcher()
 </script>
 
-<button class="btn btn-small">{title}</button>
+<button class="btn btn-small" on:click={() => dispatch('click')}>{title}</button>
 
 <style lang="scss">
   .btn {

@@ -28,6 +28,7 @@
     "vite": "^2.9.5"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "sirv-cli": "^2.0.0"
   }
 }

@@ -2,7 +2,7 @@
   export let title = 'title'
   export let placeholder = 'title'
   export let value = ''
-  export let values = ['Я закупщик', 'Я заказчик']
+  export let values = ['Я заказчик', 'Я закупщик']
   export let currentValue = values?.[0]
   export let selectedIndex = 0
 
