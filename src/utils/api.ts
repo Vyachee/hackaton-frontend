@@ -13,12 +13,17 @@ export class ApiHelper {
         localStorage.removeItem('token')
     }
     register = async ( dick: { firstname: string; repeat_password: string; address: string; INN: string; middlename: string; fullName: string; telephone: string; login: string; lastname: string; OGRN: string; user_role_id: number; password: string; email: string } ) => {
-        const result = await axios.post(getPath('register'), dick)
-        const token = result.data.api_token
-        if(token) {
-            this.saveToken(token)
+        let response
+        try {
+            response = await axios.post(getPath('register'), dick)
+            const token = response.data.api_token
+            if(token) {
+                this.saveToken(token)
+            }
+        }   catch ( e ) {
+            response = e.response
         }
-        return result
+        return response
     }
     login = async (dick : {login, password}) => {
         const result = await axios.post(getPath('login'), dick)
@@ -37,7 +42,6 @@ export class ApiHelper {
         }   catch ( e ) {
             response = e.response
         }
-        console.log(response)
         return response
     }
     getUserInfo = async (token) => {

@@ -34,17 +34,19 @@
     }
 
     const register = async () => {
-        try {
-            if(registerFormData.password !== registerFormData.repeat_password) {
-                throw new Error('Пароли не совпадают')
-            }
-            await api.register({
-                ...registerFormData,
-                user_role_id: userRoleIndex + 1
-            })
+        if(registerFormData.password !== registerFormData.repeat_password) {
+            throw new Error('Пароли не совпадают')
+        }
+        const result = await api.register({
+            ...registerFormData,
+            user_role_id: userRoleIndex + 1
+        })
+        const errors = result?.data?.errors
+        if(errors) {
+            const firstError = Object.entries(errors).shift().pop()
+            $addAlerts(firstError)
+        }   else {
             $userToken = localStorage.getItem("token")
-        }	catch ( e: Error ) {
-            // todo show error
         }
     }
 
