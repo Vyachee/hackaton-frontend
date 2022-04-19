@@ -1,6 +1,8 @@
 <script>
     import { getContext } from 'svelte'
     import Landing from './Landing.svelte'
+    import Buyer from './Buyer.svelte'
+    import Seller from './Seller.svelte'
 
     const user = getContext("user")
     const userToken = getContext("userToken")
@@ -11,11 +13,17 @@
 {/if}
 
 {#if $user?.role === 'Закупщик'}
-    закупщик ты
+    <Buyer/>
 {/if}
 
 {#if $user?.role === 'Поставщик'}
-    поставщик ты
+    <Seller/>
 {/if}
 
 <!--<slot/>-->
+
+<style>
+    :global(body) {
+        background-color: #F3F7F8 !important;
+    }
+</style>
