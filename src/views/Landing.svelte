@@ -136,7 +136,7 @@
                 <h2>Profit!</h2>
             </div>
         </div>
-        <div class="inner-container section">
+        <div class="inner-container section pt">
             <div class="head mb0">
                 <h1>Зарегистрируйтесь</h1>
             </div>
@@ -254,6 +254,9 @@
       height: 100vh;
       .inner-container {
         height: 100vh;
+        &.pt {
+          padding-top: 20px;
+        }
       }
       .head {
         display: flex;
