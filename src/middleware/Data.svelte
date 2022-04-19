@@ -7,6 +7,19 @@
 
   const user = writable(null)
   const userToken = writable(null);
+  const alerts = writable([])
+
+  let number = 1
+  const addTestAlert = (text) => {
+    $alerts = [...$alerts, {
+      id: number++,
+      text
+    }]
+    setTimeout(() => {
+      $alerts.shift()
+      $alerts = $alerts
+    }, 3000)
+  }
   $userToken = localStorage.getItem("token")
 
 
@@ -14,14 +27,22 @@
 
   const fetchUserData = async () => {
     const userData = await api.getUserInfo($userToken)
-    $user = userData.data.data
+    $user = userData?.data?.data
   }
 
   $: if($userToken) {
     fetchUserData()
   }
+
+
+  const addAlert = writable((text) => {
+    addTestAlert(text)
+  })
+
   setContext('user', user)
   setContext('userToken', userToken)
+  setContext('alerts', alerts)
+  setContext('addAlerts', addAlert)
 </script>
 
 <slot/>

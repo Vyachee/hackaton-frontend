@@ -1,7 +1,10 @@
 <script>
   import Data from './Data.svelte'
+  import Alerts from '../components/Alerts.svelte'
 </script>
 
 <Data>
-    <slot/>
+    <Alerts>
+        <slot/>
+    </Alerts>
 </Data>

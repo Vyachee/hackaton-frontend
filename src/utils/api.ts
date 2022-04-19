@@ -29,9 +29,16 @@ export class ApiHelper {
         return result
     }
     validateField = async (field, value) => {
-        return await axios.post(getPath('validate'), {
-            field, value
-        })
+        const validate = {}
+        validate[field] = value
+        let response
+        try {
+            response = await axios.post(getPath('validate'), validate)
+        }   catch ( e ) {
+            response = e.response
+        }
+        console.log(response)
+        return response
     }
     getUserInfo = async (token) => {
         return await axios.get(getPath('userInfo'), {

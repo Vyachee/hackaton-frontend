@@ -7,6 +7,7 @@
     import { ApiHelper } from "../utils/api";
     import { getContext } from "svelte";
     const userToken = getContext("userToken")
+    const addAlerts = getContext("addAlerts")
 
     let userRoleIndex = 0
 
@@ -49,6 +50,11 @@
 
     const validateField = async (field, value) => {
         const result = await new ApiHelper().validateField(field, value)
+        const errors = result?.data?.errors
+        if(errors) {
+            const firstError = Object.entries(errors).shift().pop()
+            $addAlerts(firstError)
+        }
     }
 
     const login = async () => {
