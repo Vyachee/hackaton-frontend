@@ -71,6 +71,10 @@
     }
 
     let showAuth = false
+
+    const goToRegister = () => {
+        document.querySelector('#register').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 </script>
 {#if showAuth}
     <div class="popup" transition:fade={{duration: 500}}>
@@ -108,7 +112,7 @@
                 <h1>Как это работает?</h1>
                 <div class="buttons">
                     <SmallButton title="Личный кабинет" on:click={() => showAuth = true}/>
-                    <SmallButton title="Регистрация"/>
+                    <SmallButton title="Регистрация" on:click={goToRegister}/>
                 </div>
             </div>
             <div class="content">
@@ -143,7 +147,7 @@
                 <h2>Profit!</h2>
             </div>
         </div>
-        <div class="inner-container section pt">
+        <div class="inner-container section pt" id="register">
             <div class="head mb0">
                 <h1>Зарегистрируйтесь</h1>
             </div>
