@@ -26,12 +26,19 @@ export class ApiHelper {
         return response
     }
     login = async (dick : {login, password}) => {
-        const result = await axios.post(getPath('login'), dick)
-        const token = result.data.api_token
-        if(token) {
-            this.saveToken(token)
+        let response
+        try {
+            response = await axios.post(getPath('login'), dick)
+            const token = response.data.api_token
+            if(token) {
+                this.saveToken(token)
+            }
+
+        }   catch ( e ) {
+            response = e.response
         }
-        return result
+
+        return response
     }
     validateField = async (field, value) => {
         const validate = {}

@@ -60,9 +60,14 @@
     }
 
     const login = async () => {
-        await api.login(loginFormData)
-        const newToken = localStorage.getItem("token")
-        $userToken = localStorage.getItem("token")
+        const result = await api.login(loginFormData)
+        const error = result?.data?.message
+        if(error) {
+            $addAlerts(error)
+        }   else {
+            const newToken = localStorage.getItem("token")
+            $userToken = localStorage.getItem("token")
+        }
     }
 
     let showAuth = false
