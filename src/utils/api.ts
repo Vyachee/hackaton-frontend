@@ -58,6 +58,40 @@ export class ApiHelper {
             }
         })
     }
+    getPaymentMethods = async () => {
+        return await axios.get(getPath('paymentMethods'), {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
+    getProductionTypes = async () => {
+        return await axios.get(getPath('productionType'), {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
+    getCurrencies = async () => {
+        return await axios.get(getPath('currencies'), {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
+    usersRequestsList = async () => {
+        let response
+        try {
+            response = await axios.get(getPath('usersRequestsList'), {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+        }   catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
 
 
 }
