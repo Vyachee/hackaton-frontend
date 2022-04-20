@@ -49,8 +49,12 @@
   const fetchOne = async () => {
     const response = await api.getOneRequest(selectedRequest?.id)
     selectedRequest = response?.data?.data
+    sendOfferData.supply_at = format(new Date(selectedRequest?.expiring_at), 'yyyy-MM-dd HH:mm')
   }
   const sendRequest = async () => {
+
+    if(!sendOfferData.supply_at)
+      sendOfferData.supply_at = format(new Date(selectedRequest?.expiring_at), 'yyyy-MM-dd HH:mm')
 
     Object.keys(sendOfferData).map(value => {
       if(!sendOfferData[value]) delete sendOfferData[value]
@@ -97,7 +101,12 @@
         </div>
     {:else}
         <div class="request-info">
-            <h1>Информация о запросе</h1>
+            <div class="header-row">
+                <img src="/assets/img/caret.svg" alt="" on:click={() => {
+                  selectedRequest = null
+                }}>
+                <h1>Информация о запросе</h1>
+            </div>
             <div class="row">
                 <div class="info">
                     <div class="grid">
@@ -247,6 +256,20 @@
   .request-info {
     padding: 50px 0 0 50px;
     width: 100%;
+
+    .header-row {
+      display: flex;
+      gap: 10px;
+      img {
+        transform: rotate(-90deg);
+        cursor: pointer;
+        opacity: 0.85;
+        transition: 0.2s;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
 
     .row {
       display: flex;

@@ -1,12 +1,14 @@
 <script>
 
   // import { user } from '../utils/api'
-  import { setContext } from 'svelte'
+  import { getContext, setContext } from 'svelte'
   import { writable } from 'svelte/store'
   import { ApiHelper } from '../utils/api'
+  import Pusher from 'pusher-js'
+  // import * as PusherPushNotifications from "@pusher/push-notifications-web";
 
   const user = writable(null)
-  const userToken = writable(null);
+  const userToken = writable(null)
   const alerts = writable([])
 
   let number = 1
@@ -20,24 +22,30 @@
       $alerts = $alerts
     }, 3000)
   }
-  $userToken = localStorage.getItem("token")
-
+  $userToken = localStorage.getItem('token')
 
   const api = new ApiHelper()
-
-  const fetchUserData = async () => {
-    const userData = await api.getUserInfo($userToken)
-    $user = userData?.data?.data
-  }
-
-  $: if($userToken) {
-    fetchUserData()
-  }
-
 
   const addAlert = writable((text) => {
     addTestAlert(text)
   })
+
+  const fetchUserData = async () => {
+    const userData = await api.getUserInfo($userToken)
+    $user = userData?.data?.data
+
+    const pusher = new Pusher('e03ea6c808a65eccf709', {
+      cluster: 'eu'
+    })
+    const channel = pusher.subscribe(`${$user?.id}-approved`)
+    channel.bind('my-event', function (data) {
+      addTestAlert(data)
+    })
+  }
+
+  $: if ($userToken) {
+    fetchUserData()
+  }
 
   setContext('user', user)
   setContext('userToken', userToken)

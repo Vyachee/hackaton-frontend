@@ -6,7 +6,7 @@
 </script>
 
 <div class="alerts-container">
-    {#if $alerts.length > 0}
+    {#if $alerts?.length > 0}
         <div class="bg" transition:fade></div>
     {/if}
     <div class="list">
