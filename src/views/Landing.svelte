@@ -14,18 +14,18 @@
     const api = new ApiHelper()
 
     const registerFormData = {
-        login: 'asdasda',
-        password: '123',
-        firstname: 'asdfasdf',
-        repeat_password: '123',
-        lastname: 'asdfasdf',
-        INN: '1234567890',
-        middlename: 'asdfasdfasdf',
-        OGRN: '12345678901234',
-        address: 'asdfasdfasdf',
-        email: 'adfasdf@mail.ru',
-        telephone: '123123123',
-        fullName: 'sdfaasdfasdf'
+        login: null,
+        password: null,
+        firstname: null,
+        repeat_password: null,
+        lastname: null,
+        INN: null,
+        middlename: null,
+        OGRN: null,
+        address: null,
+        email: null,
+        telephone: null,
+        fullName: null
     }
 
     const loginFormData = {

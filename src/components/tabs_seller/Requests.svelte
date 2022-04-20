@@ -133,14 +133,16 @@
                         />
                     </div>
 
-                    <div class="docs">
-                        <span>Документы</span>
-                        <div class="items">
-                            {#each selectedRequest?.documents as doc}
-                                <Document {doc}/>
-                            {/each}
+                    {#if selectedRequest?.documents?.length > 0}
+                        <div class="docs">
+                            <span>Документы</span>
+                            <div class="items">
+                                {#each selectedRequest?.documents as doc}
+                                    <Document {doc}/>
+                                {/each}
+                            </div>
                         </div>
-                    </div>
+                    {/if}
 
                 </div>
 

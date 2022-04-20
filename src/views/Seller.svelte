@@ -9,6 +9,7 @@
     import Requests from "../components/tabs_seller/Requests.svelte";
     import Chat from "../components/tabs_seller/Chat.svelte";
     import Cabinet from "../components/tabs_seller/Cabinet.svelte";
+    import Logout from "../components/Logout.svelte";
     const userToken = getContext("userToken")
     const user = getContext("user")
     const addAlerts = getContext("addAlerts")
@@ -23,6 +24,10 @@
         {
             title: 'Личный кабинет',
             component: Cabinet
+        },
+        {
+            title: 'Выйти',
+            component: Logout
         },
     ]
 

@@ -2,9 +2,13 @@
   import { format } from 'date-fns'
 
   export let doc
+
+  const download = () => {
+    window.open(doc.url, '_blank').focus();
+  }
 </script>
 
-<div class="doc-item">
+<div class="doc-item" on:click={download}>
     <img src="/assets/img/doc.svg" alt="">
     <div class="doc-item-info">
         <div class="title">{doc?.id}.{doc?.extension}</div>

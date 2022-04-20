@@ -1,18 +1,20 @@
 <script>
-    import { format } from 'date-fns'
-    import { slide } from 'svelte/transition'
+  import { format } from 'date-fns'
+  import { slide } from 'svelte/transition'
+  import { getContext } from 'svelte'
+  const user = getContext('user');
 
-    export let offer
-    export let expanded = false
+  export let offer
+  export let expanded = false
 </script>
 
 <div class="item">
     <div class="row">
         <div class="title">
-            <b>{offer?.user?.fullName}</b>
+            <b>{offer?.user?.fullName || $user.fullName}</b>
         </div>
         <div class="date">
-            в срок до <b>{format(new Date(offer?.supply_at), 'dd.MM.yyyy HH:mm')}</b>
+            в срок до <b>{format(new Date(offer?.supply_at || null), 'dd.MM.yyyy HH:mm')}</b>
         </div>
         <div class="price">
             <b>{offer?.price_with_character} </b>
@@ -42,42 +44,45 @@
 </div>
 
 <style lang="scss">
-    .item {
-        width: 100%;
-        border-radius: 10px;
-        background-color: #fff;
-        box-shadow: 0 7px 10px rgba(0, 0, 0, 0.05);
-        padding: 15px 20px;
-      .more-info {
-        margin-top: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        .row {
-          .title {
-            width: 200px;
-          }
-        }
-      }
+  .item {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.05);
+    padding: 15px 20px;
+
+    .more-info {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
 
       .row {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+        .title {
+          width: 200px;
+        }
+      }
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .toggle {
+      cursor: pointer;
+      opacity: 0.8;
+      transition: 0.2s;
+      transform: rotate(180deg);
+
+      &.expanded {
+        transform: unset;
       }
 
-        .toggle {
-          cursor: pointer;
-          opacity: 0.8;
-          transition: 0.2s;
-          transform: rotate(180deg);
-
-          &.expanded {
-            transform: unset;
-          }
-          &:hover {
-            opacity: 1;
-          }
-        }
+      &:hover {
+        opacity: 1;
+      }
     }
+  }
 </style>
