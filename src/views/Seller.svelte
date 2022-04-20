@@ -21,10 +21,6 @@
             component: Requests
         },
         {
-            title: 'Увдомления',
-            component: Chat
-        },
-        {
             title: 'Личный кабинет',
             component: Cabinet
         },

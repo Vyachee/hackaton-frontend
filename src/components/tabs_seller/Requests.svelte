@@ -145,10 +145,12 @@
                 </div>
 
                 <div class="offers">
-                    <div class="current-price">
-                        <h1>{selectedRequest?.lowest_price || selectedRequest?.price_with_character || '-'}</h1>
-                        <h3>самая низкая цена</h3>
-                    </div>
+                    {#if selectedRequest?.is_auction}
+                        <div class="current-price">
+                            <h1>{selectedRequest?.lowest_price || selectedRequest?.price_with_character || '-'}</h1>
+                            <h3>самая низкая цена</h3>
+                        </div>
+                    {/if}
                     <div class="send-offer">
                         <Input title="Срок исполнения"
                                placeholder="00.00.0000 00:00"
@@ -159,15 +161,18 @@
                                   placeholder="Выберите тип"
                                   bind:selectedId={sendOfferData.production_type_id}
                         />
-                        <Dropdown title="Валюта"
-                                  bind:items={dropdownsData.currencies}
-                                  placeholder="Выберите валюту"
-                                  bind:selectedId={sendOfferData.currency_id}
-                        />
-                        <Input title="Цена"
-                               placeholder="Введите цену"
-                               bind:value={sendOfferData.price}
-                        />
+
+                        {#if selectedRequest?.is_auction}
+                            <Dropdown title="Валюта"
+                                      bind:items={dropdownsData.currencies}
+                                      placeholder="Выберите валюту"
+                                      bind:selectedId={sendOfferData.currency_id}
+                            />
+                            <Input title="Цена"
+                                   placeholder="Введите цену"
+                                   bind:value={sendOfferData.price}
+                            />
+                        {/if}
                         <Dropdown title="Способ оплаты"
                                   bind:items={dropdownsData.payments}
                                   placeholder="Способ оплаты"
@@ -204,6 +209,9 @@
 
     .items {
       margin-top: 10px;
+      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -218,6 +226,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      margin-bottom: 30px;
 
       h1 {
         font-size: 64px;
@@ -230,7 +239,6 @@
     }
 
     .send-offer {
-      margin-top: 30px;
       background-color: #fff;
       border-radius: 10px;
       box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.05);
@@ -305,7 +313,7 @@
       flex-wrap: wrap;
       padding-bottom: 100px;
       width: 100%;
-      height: 100%;
+      //height: 100%;
       gap: 20px;
       margin-top: 40px;
       overflow-y: scroll;

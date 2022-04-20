@@ -39,7 +39,7 @@
     })
     const channel = pusher.subscribe(`${$user?.id}-approved`)
     channel.bind('my-event', function (data) {
-      addTestAlert(data)
+      addTestAlert(data?.message || data)
     })
   }
 
