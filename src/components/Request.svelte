@@ -43,7 +43,7 @@
     </div>
     <div class="actions">
         <div class="status">
-            Открыта
+            {request?.is_open ? 'Открыта' : 'Закрыта'}
         </div>
         <div class="more">
             Подробнее

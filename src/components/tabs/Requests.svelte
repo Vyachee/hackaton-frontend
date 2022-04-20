@@ -8,6 +8,10 @@ import Switcher from '../Switcher.svelte'
 import Dropdown from '../Dropdown.svelte'
 import { ApiHelper } from '../../utils/api'
 import { getContext } from 'svelte'
+import InputText from '../InputText.svelte'
+import Document from '../Document.svelte'
+import OfferItem from '../OfferItem.svelte'
+import { format } from 'date-fns'
 const addAlerts = getContext("addAlerts")
 
 const checkboxes = [
@@ -25,26 +29,6 @@ let fileInput
 $: if(fileInput?.files) {
 }
 
-let title = false
-
-const onFileLoad = () => {
-  title = Object.entries(fileInput.files).map(file => file[1].name).join(', ')
-}
-
-let isService
-
-const data = {
-  name: null,
-  count: null,
-  price: null,
-  comment: null,
-  currency_id: null,
-  production_type_id: null,
-  is_auction: null,
-  is_service: null,
-  payment_method_id: null,
-  expire_at: null
-}
 
 const createRequest = async () => {
 
@@ -93,6 +77,30 @@ const createRequest = async () => {
 
     });
 }
+
+let title = false
+
+const onFileLoad = () => {
+  title = Object.entries(fileInput.files).map(file => file[1].name).join(', ')
+}
+
+let isService
+
+const data = {
+  name: null,
+  count: null,
+  price: null,
+  comment: null,
+  currency_id: null,
+  production_type_id: null,
+  is_auction: null,
+  is_service: null,
+  payment_method_id: null,
+  expire_at: null
+}
+
+let selectedRequest
+
 const api = new ApiHelper()
 let requests = []
 
@@ -100,6 +108,8 @@ const getUsersRequests = async () => {
   const data = await api.usersRequestsList()
   requests = data.data.data
 }
+
+
 
 getUsersRequests()
 
@@ -117,15 +127,39 @@ const fetchData = async () => {
 
 fetchData()
 
+
+const fetchOne = async () => {
+  const response = await api.getOneRequest(selectedRequest?.id)
+  selectedRequest = response?.data?.data
+}
+
+const onSelect = async (request) => {
+  selectedRequest = request
+  await fetchOne()
+}
+
+const closeRequest = async () => {
+  selectedRequest.is_open = false
+  await api.close(selectedRequest.id)
+  await fetchOne()
+}
+
+const openRequest = async () => {
+  selectedRequest.is_open = false
+  await api.open(selectedRequest.id)
+  await fetchOne()
+}
+
 </script>
 
 <div class="wrap">
+    {#if !selectedRequest}
     <div class="requests">
         <h1>Ваши запросы на закупку</h1>
         <div class="items">
             {#if requests}
                 {#each requests as request}
-                    <Request {request}/>
+                    <Request {request} on:click={() => onSelect(request)}/>
                 {/each}
             {/if}
         </div>
@@ -176,6 +210,81 @@ fetchData()
             </div>
         </div>
     </div>
+
+
+  {:else}
+    <div class="request-info">
+        <div class="header-row">
+            <img src="/assets/img/caret.svg" alt="" on:click={() => {
+                  selectedRequest = null
+                }}>
+            <h1>Информация о запросе</h1>
+        </div>
+        <div class="row">
+            <div class="info">
+                <div class="grid">
+                    <Input title="Срок окончания запроса"
+                               value={selectedRequest.expired_at || '-'}
+                    />
+                    <Input title="Валюта"
+                               value={selectedRequest?.currency?.name || '-'}
+                    />
+                    <Input title="Тип продукции"
+                               value={selectedRequest?.production_type?.name || '-'}
+                    />
+                    <Input title="Адрес доставки"
+                               value={selectedRequest?.address || '-'}
+                    />
+                    <Input title="Комментарий"
+                               value={selectedRequest?.comment || '-'}
+                    />
+                    <Input title="Начальная цена"
+                               value={selectedRequest?.price || '-'}
+                    />
+                    <Input title="Объем"
+                               value={selectedRequest?.count || '-'}
+                    />
+                </div>
+
+                {#if selectedRequest?.documents?.length > 0}
+                    <div class="docs">
+                        <span>Документы</span>
+                        <div class="items">
+                            {#each selectedRequest?.documents as doc}
+                                <Document {doc}/>
+                            {/each}
+                        </div>
+                    </div>
+                {/if}
+                <div class="buttons">
+<!--                    <Button modifier="green" title="Сохранить" />-->
+                    {#if selectedRequest?.is_open}
+                        <Button title="Закрыть" modifier="danger" on:click={closeRequest} />
+                    {:else}
+                        <Button title="Открыть" on:click={openRequest} />
+                    {/if}
+                </div>
+
+            </div>
+
+            <div class="offers">
+                {#if selectedRequest?.is_auction}
+                    <div class="current-price">
+                        <h1>{selectedRequest?.lowest_price || selectedRequest?.price_with_character || '-'}</h1>
+                        <h3>самая низкая цена</h3>
+                    </div>
+                {/if}
+                <div class="offers-list">
+                    {#if selectedRequest?.responses}
+                        {#each selectedRequest?.responses as offer}
+                            <OfferItem {offer}/>
+                        {/each}
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+  {/if}
 </div>
 
 
@@ -183,6 +292,110 @@ fetchData()
   .wrap {
     display: flex;
   }
+
+  .buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+  }
+
+  .docs {
+    margin-top: 20px;
+
+    .items {
+      margin-top: 10px;
+      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .request-info {
+    padding: 50px 0 0 50px;
+    width: 100%;
+
+    .header-row {
+      display: flex;
+      gap: 10px;
+      img {
+        transform: rotate(-90deg);
+        cursor: pointer;
+        opacity: 0.85;
+        transition: 0.2s;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    .row {
+      display: flex;
+      margin-top: 30px;
+      width: 100%;
+      height: 100%;
+
+      .info {
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 25px;
+        box-shadow: 0 7px 9px rgba(0, 0, 0, 0.05);
+        min-width: 650px;
+        height: max-content;
+
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 30px;
+        }
+
+      }
+    }
+  }
+  .offers {
+    width: 100%;
+    padding: 0 50px 0 20px;
+    height: 93%;
+    overflow-y: scroll;
+
+    .current-price {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+
+      h1 {
+        font-size: 64px;
+      }
+
+      h3 {
+        font-size: 20px;
+        color: #454545;
+      }
+    }
+
+    .send-offer {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.05);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 20px;
+      gap: 10px;
+
+      :global(:last-child) {
+        grid-column-start: 1;
+        grid-column-end: 4;
+      }
+    }
+
+    .offers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  }
+
     .requests {
         padding: 50px;
 

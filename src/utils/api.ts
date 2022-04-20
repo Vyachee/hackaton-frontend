@@ -133,6 +133,36 @@ export class ApiHelper {
         }
         return response
     }
+    open = async ( id ) => {
+        let response
+        try {
+            response = await axios.get(getPath('request/'+id+'/open'),
+
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+        } catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
+    close = async ( id, data ) => {
+        let response
+        try {
+            response = await axios.get(getPath('request/'+id+'/close'),
+
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+        } catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
 
 
 }

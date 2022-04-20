@@ -21,6 +21,7 @@
     span {
       font-size: 14px;
       margin-bottom: 5px;
+      font-weight: bold;
     }
     .value {
       font-size: 16px;

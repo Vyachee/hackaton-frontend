@@ -70,6 +70,8 @@
 <style lang="scss">
   .cabinet {
     padding: 50px;
+    overflow-y: scroll;
+    height: 100vh;
 
     .row {
       margin-top: 30px;
@@ -78,7 +80,7 @@
       gap: 50px;
 
       .form {
-        padding: 10px;
+        padding: 15px;
         background-color: #fff;
         border-radius: 10px;
         box-shadow: -10px 0px 87px rgba(0, 0, 0, 0.05);
