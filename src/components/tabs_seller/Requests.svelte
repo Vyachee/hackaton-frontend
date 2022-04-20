@@ -2,9 +2,7 @@
 
   import Request from '../Request.svelte'
   import Input from '../Input.svelte'
-  import Checkbox from '../Checkbox.svelte'
   import Button from '../Button.svelte'
-  import Switcher from '../Switcher.svelte'
   import Dropdown from '../Dropdown.svelte'
   import { ApiHelper } from '../../utils/api'
   import { getContext } from 'svelte'

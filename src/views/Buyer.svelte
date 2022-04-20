@@ -30,7 +30,8 @@
         },
     ]
 
-    selectedTab = tabs[0]
+    selectedTab = tabs[1]
+
 </script>
 
     <div class="wrap">

@@ -163,6 +163,23 @@ export class ApiHelper {
         }
         return response
     }
+    changeOfferStatus = async ( id, status ) => {
+        let response
+        try {
+            response = await axios.post(getPath('response/'+id+'/status'),
+                {
+                    status_id: status
+                },
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+        } catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
 
 
 }

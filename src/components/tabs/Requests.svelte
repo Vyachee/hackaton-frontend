@@ -142,11 +142,23 @@ const closeRequest = async () => {
   selectedRequest.is_open = false
   await api.close(selectedRequest.id)
   await fetchOne()
+  await getUsersRequests()
 }
 
 const openRequest = async () => {
   selectedRequest.is_open = false
   await api.open(selectedRequest.id)
+  await fetchOne()
+  await getUsersRequests()
+}
+
+const accept = async (offer) => {
+  await api.changeOfferStatus(offer?.id, 2)
+  await fetchOne()
+}
+
+const decline = async (offer) => {
+  await api.changeOfferStatus(offer?.id, 1)
   await fetchOne()
 }
 
@@ -223,25 +235,25 @@ const openRequest = async () => {
         <div class="row">
             <div class="info">
                 <div class="grid">
-                    <Input title="Срок окончания запроса"
+                    <InputText title="Срок окончания запроса"
                                value={selectedRequest.expired_at || '-'}
                     />
-                    <Input title="Валюта"
+                    <InputText title="Валюта"
                                value={selectedRequest?.currency?.name || '-'}
                     />
-                    <Input title="Тип продукции"
+                    <InputText title="Тип продукции"
                                value={selectedRequest?.production_type?.name || '-'}
                     />
-                    <Input title="Адрес доставки"
+                    <InputText title="Адрес доставки"
                                value={selectedRequest?.address || '-'}
                     />
-                    <Input title="Комментарий"
+                    <InputText title="Комментарий"
                                value={selectedRequest?.comment || '-'}
                     />
-                    <Input title="Начальная цена"
+                    <InputText title="Начальная цена"
                                value={selectedRequest?.price || '-'}
                     />
-                    <Input title="Объем"
+                    <InputText title="Объем"
                                value={selectedRequest?.count || '-'}
                     />
                 </div>
@@ -277,7 +289,11 @@ const openRequest = async () => {
                 <div class="offers-list">
                     {#if selectedRequest?.responses}
                         {#each selectedRequest?.responses as offer}
-                            <OfferItem {offer}/>
+                            <OfferItem {offer}
+                                       showActions={true}
+                                       on:accept={() => accept(offer)}
+                                       on:decline={() => decline(offer)}
+                            />
                         {/each}
                     {/if}
                 </div>
