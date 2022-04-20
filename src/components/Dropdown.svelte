@@ -6,7 +6,6 @@
   export let placeholder = 'title'
   export let value = null
 
-  $: console.log(value)
   export let items = [{
     id: 1,
     name: 'Рубли',
@@ -15,7 +14,6 @@
 
   export let selectedId = null
 
-  $: console.log(value)
 
   const handleSelect = (event) => {
     value = event.detail
@@ -24,7 +22,6 @@
 
   const dispatch = createEventDispatcher()
 
-  $: console.log(items)
 </script>
 
 <div class="input">

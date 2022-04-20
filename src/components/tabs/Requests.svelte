@@ -23,15 +23,12 @@ const checkboxes = [
 
 let fileInput
 $: if(fileInput?.files) {
-  console.log(fileInput.files)
 }
 
 let title = false
 
 const onFileLoad = () => {
-  console.log(Object.entries(fileInput.files))
   title = Object.entries(fileInput.files).map(file => file[1].name).join(', ')
-  console.log(title)
 }
 
 let isService
@@ -82,9 +79,7 @@ const createRequest = async () => {
   fetch("http://192.168.144.13/api/request", requestOptions)
     .then(response => response.json())
     .then(async result => {
-      console.log(result)
       const errors = result?.errors
-      console.log(errors)
       if(errors) {
         const firstError = Object.entries(errors).shift().pop()
         $addAlerts(firstError)
@@ -104,7 +99,6 @@ let requests = []
 const getUsersRequests = async () => {
   const data = await api.usersRequestsList()
   requests = data.data.data
-  console.log(requests)
 }
 
 getUsersRequests()

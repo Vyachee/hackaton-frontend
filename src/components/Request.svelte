@@ -1,10 +1,12 @@
 <script>
   import { format } from 'date-fns'
+  import { createEventDispatcher } from 'svelte'
+  const dispatch = createEventDispatcher()
 
   export let request
 </script>
 
-<div class="request-card">
+<div class="request-card" on:click={() => dispatch('click')}>
     <h2>{request?.name}</h2>
     <div class="items">
 
