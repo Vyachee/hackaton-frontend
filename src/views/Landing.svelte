@@ -73,7 +73,10 @@
     let showAuth = false
 
     const goToRegister = () => {
-        document.querySelector('#register').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        goToToId('register')
+    }
+    const goToToId = (id) => {
+        document.querySelector(`#${id}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 </script>
 {#if showAuth}
@@ -100,20 +103,48 @@
 <section>
     <div class="image">
         <div class="title">
-            <h1>Хакатон</h1>
+            <h1>4pt trade</h1>
             <p>Покупай, продавай и производи!</p>
+        </div>
+        <div class="navigation">
+            <p on:click={() => goToToId('s1')}>Что это такое?</p>
+            <p on:click={() => goToToId('s2')}>Как это работает?</p>
+            <p on:click={() => goToToId('s3')}>Система общения</p>
+            <p on:click={() => goToToId('register')}>Регистрация</p>
         </div>
         <img src="/assets/img/illustration.png" alt="">
     </div>
     <div class="content-container">
-        <div class="inner-container-section">
+        <div class="inner-container-section" id="s1">
 
             <div class="head">
-                <h1>Как это работает?</h1>
+                <h1>Что это такое?</h1>
                 <div class="buttons">
                     <SmallButton title="Личный кабинет" on:click={() => showAuth = true}/>
                     <SmallButton title="Регистрация" on:click={goToRegister}/>
                 </div>
+            </div>
+            <div class="content first">
+                <h2>4pt trade —</h2>
+                <p>это электронная торговая площадка для промышленных предприятий</p>
+                <p>Она позволяет промышленным предприятиям реализовывать свою продукцию и закупать необходимую для работы продукцию других предприятий в ходе электронных торгов.</p>
+                <p>Например, вы производите на своём предприятии арматуру, но не знаете, кому её реализовать.
+                    <br><br>
+                <b>Наша площадка поможет Вам в этом!</b>
+                    <br><br>
+                    Просматривайте список заявок на закупку вашей категории продуктов или услуг, отправляйте свои предложения удобно при помощи нашей торговой площадки.</p>
+                <p>Если же вы нуждаетесь в каком-либо сырье, наша площадка так же поможет Вам с этим!</p>
+                <ul>
+                    <li>Создайте заявку на закупку;</li>
+                    <li>Дождитесь предложений от поставщиков;</li>
+                    <li>Выберите наиболее выгодное предложение.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="inner-container-section" id="s2">
+
+            <div class="head">
+                <h1>Как это работает?</h1>
             </div>
             <div class="content">
                 <div class="col">
@@ -147,6 +178,19 @@
                 <h2>Profit!</h2>
             </div>
         </div>
+
+        <div class="inner-container-section" id="s3">
+
+            <div class="head">
+                <h1>Система общения между партнерами</h1>
+            </div>
+            <div class="content first">
+
+                <p>На площадке реализована система чатов между закупщиком и поставщиком</p>
+                <p>Уточняйте детали заявки, будьте на связи с партнерами, и многое другое в режиме реального времени!</p>
+                <img src="/assets/img/chat.png" alt="" style="margin-top: 200px">
+            </div>
+        </div>
         <div class="inner-container section pt" id="register">
             <div class="head mb0">
                 <h1>Зарегистрируйтесь</h1>
@@ -177,6 +221,9 @@
 </section>
 
 <style lang="scss">
+  .inner-container-section {
+    height: 100vh;
+  }
   .popup {
     position: fixed;
     top: 0;
@@ -240,6 +287,23 @@
       display: flex;
       align-items: end;
       position: relative;
+
+      .navigation {
+        position: absolute;
+        top: 150px;
+        left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        p {
+          cursor: pointer;
+          opacity: 0.75;
+          transition: 0.2s;
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
       .title {
         position: absolute;
         top: 25px;
@@ -297,6 +361,17 @@
       .content {
         display: flex;
         align-items: start;
+        &.first {
+          flex-direction: column;
+          margin: 0px 50px;
+          gap: 20px;
+          h2 {
+            font-size: 36px;
+          }
+          p, li {
+            font-size: 24px;
+          }
+        }
         .col {
           width: 50%;
           display: flex;
