@@ -29,6 +29,8 @@ let fileInput
 $: if(fileInput?.files) {
 }
 
+let filteredText
+
 
 const createRequest = async () => {
 
@@ -40,7 +42,11 @@ const createRequest = async () => {
   formData.append("count", data.count);
   formData.append("price", data.price);
   formData.append("currency_id", data.currency_id);
-  formData.append("production_type_id", data.production_type_id);
+  if(data.production_type_id) {
+    formData.append("production_type_id", data.production_type_id);
+  } else {
+    formData.append("production_type_name", filteredText)
+  }
   formData.append("is_auction", +checkboxes[1].value);
   formData.append("is_service", isService);
   formData.append("payment_method_id", data.payment_method_id);
@@ -184,7 +190,7 @@ const decline = async (offer) => {
                     <Input title="Срок окончания запроса" placeholder="00.00.0000 00:00" bind:value={data.expire_at}/>
                 {/if}
                 <Dropdown bind:items={dropdownsData.currencies}  title="Валюта" placeholder="Валюта" bind:selectedId={data.currency_id}/>
-                <Dropdown bind:items={dropdownsData.production} title="Тип {isService ? 'услуги' : 'продукции'}" placeholder="Сырье" bind:selectedId={data.production_type_id}/>
+                <Dropdown bind:items={dropdownsData.production} bind:filteredText title="Тип {isService ? 'услуги' : 'продукции'}" placeholder="Сырье" bind:selectedId={data.production_type_id}/>
                 <Input title="Название заявки" placeholder="10 тонн фрутоняни" bind:value={data.name}/>
             </div>
             <div class="grid grid-first">

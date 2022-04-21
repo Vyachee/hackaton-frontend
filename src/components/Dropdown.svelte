@@ -13,7 +13,7 @@
   }]
 
   export let selectedId = null
-
+  export let filteredText
 
   const handleSelect = (event) => {
     value = event.detail
@@ -26,7 +26,7 @@
 
 <div class="input">
     <span>{title}</span>
-    <Select bind:items optionIdentifier="id" {placeholder} labelIdentifier="name" on:select={handleSelect}/>
+    <Select bind:items bind:value bind:filterText={filteredText} optionIdentifier="id" {placeholder} labelIdentifier="name" on:select={handleSelect}/>
 </div>
 
 <style lang="scss">
