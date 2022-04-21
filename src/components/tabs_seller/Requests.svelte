@@ -50,7 +50,7 @@
   const fetchOne = async () => {
     const response = await api.getOneRequest(selectedRequest?.id)
     selectedRequest = response?.data?.data
-    sendOfferData.supply_at = format(new Date(selectedRequest?.expiring_at), 'yyyy-MM-dd HH:mm')
+    sendOfferData.supply_at = null
   }
   const sendRequest = async () => {
 
@@ -214,7 +214,7 @@
                     {/if}
                     <div class="send-offer">
                         <Input title="Срок исполнения"
-                               placeholder="00.00.0000 00:00"
+                               placeholder="ГГГГ-ММ-ДД 00:00"
                                bind:value={sendOfferData.supply_at}
                         />
                         <Dropdown title="Тип продукции"
@@ -433,6 +433,7 @@
         box-shadow: 0 7px 9px rgba(0, 0, 0, 0.05);
         min-width: 650px;
         height: max-content;
+        max-width: 800px;
 
         .grid {
           display: grid;

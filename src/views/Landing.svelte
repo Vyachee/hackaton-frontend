@@ -29,8 +29,8 @@
     }
 
     const loginFormData = {
-        login: 'test123',
-        password: 'test123'
+        login: null,
+        password: null
     }
 
     const register = async () => {

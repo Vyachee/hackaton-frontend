@@ -98,15 +98,29 @@
       margin-top: 30px;
       margin-bottom: 30px;
       flex-direction: column;
-      max-height: 800px;
+      max-height: 1400px;
       .messages {
         padding: 20px;
         flex: 1;
         border-radius: 10px;
         background-color: #fff;
-        max-height: 800px;
+        max-height: 1400px;
         overflow-y: scroll;
         box-shadow: 0 7px 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+
+        :global(.message) {
+          max-width: max-content;
+        }
+        :global(.message:first-child) {
+          margin-top: auto;
+        }
+        :global(.message.outgoing) {
+          max-width: max-content;
+          margin-left: auto;
+        }
       }
       .send {
         background-color: #fff;

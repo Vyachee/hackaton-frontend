@@ -418,8 +418,9 @@ const decline = async (offer) => {
       .items {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        width: 50%;
-
+        //width: 60%;
+        overflow-y: scroll;
+        max-height: 940px;
         gap: 20px;
         margin-top: 40px;
       }
