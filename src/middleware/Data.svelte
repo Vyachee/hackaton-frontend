@@ -37,9 +37,14 @@
     const pusher = new Pusher('e03ea6c808a65eccf709', {
       cluster: 'eu'
     })
-    const channel = pusher.subscribe(`${$user?.id}-approved`)
-    channel.bind('my-event', function (data) {
+    const channel = pusher.subscribe(`${$user?.id}`)
+    channel.bind('approved', function (data) {
       addTestAlert(data?.message || data)
+    })
+    channel.bind('chat', function (data) {
+      addTestAlert(data?.message?.message || data)
+      console.log(data?.message?.message)
+      console.log(data?.message)
     })
   }
 

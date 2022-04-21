@@ -1,12 +1,24 @@
-<div class="chat">
+<script>
+    import { createEventDispatcher } from 'svelte'
+
+    const dispatch = createEventDispatcher()
+    export let chat = {
+    }
+</script>
+
+<div class="chat" on:click={() => dispatch('click')}>
     <div class="header">
-        <h3>asdhfjgasdf</h3>
-        <p>asdasdasd</p>
+        <h3>{chat?.buy_response?.buy_request?.user?.fullName}</h3>
+        <p>{chat?.buy_response?.buy_request?.name}</p>
     </div>
-    <div class="time">3 мин.</div>
-    <div class="message">
-        Бла-бла-бла Бла-бла-бла Бла-бла-бла Бла-бла-бла Бла-бла-бла
-    </div>
+<!--    TODO: CALC TIME -->
+    <div class="time"></div>
+
+    {#if chat?.last_message}
+        <div class="message">
+                {chat?.last_message}
+        </div>
+    {/if}
 </div>
 
 
@@ -19,6 +31,7 @@
     padding: 20px;
     transition: 0.2s;
     cursor: pointer;
+    margin-left: 30px;
     &:hover {
       box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
     }
@@ -39,14 +52,14 @@
       p {
         color: #343434;
         font-size: 12px;
-        margin-bottom: 10px;
       }
 
-      .message {
-        font-size: 16px;
-        color: #000;
-      }
 
+    }
+    .message {
+      font-size: 16px;
+      color: #000;
+      margin-top: 10px;
     }
   }
 </style>

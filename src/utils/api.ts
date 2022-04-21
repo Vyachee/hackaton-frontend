@@ -180,6 +180,51 @@ export class ApiHelper {
         }
         return response
     }
+    getChats = async () => {
+        let response
+        try {
+            response = await axios.get(getPath('chats'),
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+        } catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
+    getChat = async(id) => {
+        let response
+        try {
+            response = await axios.get(getPath('chat/'+id),
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+        } catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
+    sendMessage = async(id, message) => {
+        let response
+        try {
+            response = await axios.post(getPath('chat/'+id),
+                {
+                  message: message
+                },
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+        } catch ( e ) {
+            response = e.response
+        }
+        return response
+    }
 
 
 }

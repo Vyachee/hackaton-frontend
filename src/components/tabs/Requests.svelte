@@ -419,6 +419,7 @@ const decline = async (offer) => {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         width: 50%;
+
         gap: 20px;
         margin-top: 40px;
       }
