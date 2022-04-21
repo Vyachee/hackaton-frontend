@@ -2,6 +2,7 @@
   import Chat from '../Chat.svelte'
   import Message from '../Message.svelte'
   import { ApiHelper } from '../../utils/api'
+  import { onDestroy } from 'svelte'
 
   let chats = []
   const api = new ApiHelper()
@@ -10,7 +11,19 @@
     const result = await api.getChats()
     chats = result?.data?.data
   }
-  getChats()
+
+  let interval = setInterval(async () => {
+    await getChats()
+  }, 1000)
+  let interval2
+
+  onDestroy(() => {
+    clearInterval(interval)
+    clearInterval(interval2)
+  })
+
+
+
 
   let selectedChat = false
   let selectedChatId = false
@@ -20,6 +33,14 @@
     const result = await api.getChat(id)
     selectedChat = result?.data
     selectedChatId = id
+  }
+
+  $: if(selectedChatId) {
+
+    interval2 = setInterval(async () => {
+      await getChat(selectedChatId)
+    }, 1000)
+
   }
 
   const sendMessage = async () => {

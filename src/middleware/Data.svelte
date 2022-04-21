@@ -43,8 +43,6 @@
     })
     channel.bind('chat', function (data) {
       addTestAlert(data?.message?.message || data)
-      console.log(data?.message?.message)
-      console.log(data?.message)
     })
   }
 
