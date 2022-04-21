@@ -10,8 +10,11 @@
   import { format } from 'date-fns'
   import Document from '../Document.svelte'
   import OfferItem from '../OfferItem.svelte'
+  import {fly, fade} from 'svelte/transition';
+  import Message from '../Message.svelte'
 
   const addAlerts = getContext('addAlerts')
+  const user = getContext('user')
 
   const api = new ApiHelper()
   let requests = []
@@ -77,15 +80,73 @@
 
   getUsersRequests()
 
+  let showChat = false
+  let message = null
+  let selectedChat
+
+  let responseId = null
+  const getChat = async(id) => {
+    const result = await api.getChat(id)
+    selectedChat = result?.data
+  }
+
 
   const onSelect = async (request) => {
+    responseId = null
     selectedRequest = request
     await fetchOne()
   }
 
+
+  const sendMessage = async () => {
+    const result = await api.sendMessage(responseId, message)
+    message = null
+    await getChat(responseId)
+  }
+
+  const getResponse = async () => {
+    if(!selectedRequest?.responses) return
+
+    const responses = selectedRequest?.responses?.reverse()
+    for(const item of responses) {
+      if(item?.user?.id === $user?.id) {
+        responseId = item?.id
+        await getChat(responseId)
+        break
+      }
+    }
+  }
+  $: if(selectedRequest) getResponse()
+
+
 </script>
 
 <div class="wrap">
+    {#if responseId}
+        <div class="chat-open" on:click={() => showChat = true} transition:fade>
+            <img src="/assets/img/chat_shortcut.svg" alt="">
+        </div>
+        {#if showChat}
+            <div class="chat" transition:fly={{y: 100}} class:active={showChat}>
+                <div class="header">
+                    <h2>{selectedRequest?.user?.fullName}</h2>
+                    <div class="close" on:click={() => showChat = false}><img src="/assets/img/close.svg" alt=""></div>
+                </div>
+                <div class="messages">
+                    {#if selectedChat?.conversation}
+                        {#each selectedChat?.conversation as message}
+                            <Message {message}/>
+                        {/each}
+                    {/if}
+                </div>
+                <div class="send">
+                    <input type="text" placeholder="Напишите сообщение" bind:value={message}>
+                    <img src="/assets/img/send.svg" alt="" on:click={sendMessage}>
+                </div>
+            </div>
+        {/if}
+    {/if}
+    
     {#if !selectedRequest}
         <div class="requests">
             <h1>Запросы на закупку</h1>
@@ -199,6 +260,86 @@
 
 
 <style lang="scss">
+
+  .chat-open {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    transition: 0.2s;
+    opacity: 0.85;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .chat {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    opacity: 0;
+    transition: 0.2s;
+
+    &.active {
+      opacity: 1;
+    }
+
+    .header {
+      margin: 20px;
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .close {
+        cursor: pointer;
+        opacity: 0.2;
+        transition: 0.2s;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    .messages {
+      height: 350px;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+
+    .send {
+      position: relative;
+      input {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+
+        &::placeholder {
+          color: #737373;
+        }
+      }
+      img {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: 0.2s;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
   .wrap {
     display: flex;
     height: 100%;

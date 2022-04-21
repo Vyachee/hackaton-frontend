@@ -30,7 +30,8 @@
         background-color: #80BEDD;
         padding: 15px;
         display: inline-flex;
-        width: max-content;
+        width: 100%;
+        word-break: break-word;
       }
 
       .date {

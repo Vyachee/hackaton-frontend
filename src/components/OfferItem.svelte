@@ -86,6 +86,7 @@
       align-items: center;
       height: 100%;
       transition: 0.2s;
+      z-index: 0;
     }
 
 
@@ -149,6 +150,7 @@
       transition: 0.2s;
       transform: rotate(180deg);
       margin-right: 20px;
+      z-index: 2;
 
       &.expanded {
         transform: unset;
