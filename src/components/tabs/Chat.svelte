@@ -78,6 +78,7 @@
       height: 100%;
       padding-top: 30px;
       overflow-y: scroll;
+      padding-right: 10px;
     }
 
     .no-data {

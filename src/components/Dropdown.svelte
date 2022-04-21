@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte'
+  import {fade} from 'svelte/transition'
 
   import Select from 'svelte-select';
   export let title = 'title'
@@ -20,13 +21,23 @@
     selectedId = value?.id
   }
 
+  const onClear = (detail) => {
+    selectedId = null
+  }
+
   const dispatch = createEventDispatcher()
 
 </script>
 
 <div class="input">
     <span>{title}</span>
-    <Select bind:items bind:value bind:filterText={filteredText} optionIdentifier="id" {placeholder} labelIdentifier="name" on:select={handleSelect}/>
+    <Select bind:items bind:value bind:filterText={filteredText} optionIdentifier="id" {placeholder} labelIdentifier="name"
+            on:select={handleSelect}
+            on:clear={onClear}
+    />
+    {#if !selectedId && !filteredText}
+        <img src="/assets/img/caret.svg" alt="" class="caret" transition:fade={{duration: 100}}>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -49,7 +60,14 @@
   .input {
     display: flex;
     flex-direction: column;
-
+    position: relative;
+    .caret {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      height: 10px;
+      transform: rotate(180deg);
+    }
     span {
       font-size: 18px;
       margin-bottom: 13px;

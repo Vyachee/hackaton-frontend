@@ -22,3 +22,27 @@
 	box-sizing: border-box;
 	font-family: 'Montserrat', sans-serif;
 }
+
+/* Scroll bar stylings */
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+	margin-left: 10px;
+	border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #e3e3e3;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
